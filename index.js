@@ -77,12 +77,13 @@ type = types = module.exports = {
         };
     },
     noError(type, value, name = "value") {
-        types.string(name, "name");
         types.type(type, "type");
 
         try { return type(value); } catch { return false; }
     },
     number(number, name = "value") {
+        types.string(name, "name");
+
         return typeof number === "number" ? true : error(`Expected ${name} as Number`);
     }
 };
