@@ -1,0 +1,22 @@
+{
+  "name": "type-instance",
+  "version": "0.0.1-alpha4",
+  "description": "Check types",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NekoMaru76/type-instance.git"
+  },
+  "keywords": [
+    "type"
+  ],
+  "author": "nekomaru76",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NekoMaru76/type-instance/issues"
+  },
+  "homepage": "https://github.com/NekoMaru76/type-instance#readme"
+}
