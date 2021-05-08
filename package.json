@@ -1,6 +1,6 @@
 {
   "name": "type-instance",
-  "version": "0.0.1-alpha4",
+  "version": "0.0.1-alpha5",
   "description": "Check types",
   "main": "index.js",
   "scripts": {
