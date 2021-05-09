@@ -7,23 +7,20 @@ let type, types;
 type = types = module.exports = {
     string(value, name = "value") {
         typeof name !== "string" && error("Expected name as string");
-
-        return typeof value == "string" ? true : error(`Expected ${name} as String`);
+        typeof value == "string" && error(`Expected ${name} as String`);
     },
     object(value, name = "value") {
         types.string(name, "name");
-
-        return value instanceof Object ? true : error(`Expected ${name} as Object`);
+        value instanceof Object && error(`Expected ${name} as Object`);
     },
     ["function"](value, name = "value") {
         types.string(name, "name");
-
-        return value instanceof Function ? true : error(`Expexted ${name} as Function`);
+        value instanceof Function && error(`Expexted ${name} as Function`);
     },
     type(value, name = "value") {
         types.string(name, "name");
 
-        for (const _type of Object.values(types)) if (_type === value && _type !== type.instanceof && _type !== type.gen || value.head === types) return true;
+        for (const _type of Object.values(types)) if (_type === value && _type !== type.instanceof && _type !== type.gen || value.head === types) return;
 
         error(`Expected ${name} as Type or Instance validator`);
     },
@@ -44,13 +41,10 @@ type = types = module.exports = {
         }
 
         for (const val of no) throw new TypeError(`Expected ${argsName[val.i] ? "" : `${name}.`}${argsName[val.i] || val.i} as ${argsType.length > 1 ? `one of these: ${argsType.map(type => type.name).join(", ")}` : argsType[0].name}`);
-
-        return true;
     },
     buffer(value, name = "value") {
         types.string(name, "name");
-
-        return Buffer.isBuffer(value) ? true : error(`Expected ${name} as Buffer`);
+        Buffer.isBuffer(value) && error(`Expected ${name} as Buffer`);
     },
     instanceof(constructor, constructorName = "Function", valueName) {
         valueName && types.string(valueName, "valueName");
@@ -79,12 +73,11 @@ type = types = module.exports = {
     noError(type, value, name = "value") {
         types.type(type, "type");
 
-        try { return type(value); } catch { return false; }
+        try { type(value); return true; } catch { return false; }
     },
     number(number, name = "value") {
         types.string(name, "name");
-
-        return typeof number === "number" ? true : error(`Expected ${name} as Number`);
+        typeof number === "number" && error(`Expected ${name} as Number`);
     }
 };
 

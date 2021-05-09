@@ -1,18 +1,18 @@
 # Type Instance
 
 # Description
-Don't want to use TypeScript to check types? Use this!
+Don't want to use TypeScript to validate types? Use this!
 
 # Examples
 ```js
 const types = require("type-instance");
 
-types.string("hi"); //true
+types.string("hi"); //no throws
 types.string(0); //TypeError
-types.number(0); //true
-types.buffer(Buffer.alloc(0)); //true
-types.object({}); //true
-types.array([0, "hi", 1], "value", [types.string, types.number], ["arg1", "arg2", "arg3"]); //true
+types.number(0); //no throws
+types.buffer(Buffer.alloc(0)); //no throws
+types.object({}); //no throws
+types.array([0, "hi", 1], "value", [types.string, types.number], ["arg1", "arg2", "arg3"]); //no throws
 types.gen(content => console.log(content), [types.string], ["content"])()//TypeError
 ```
 
@@ -25,8 +25,8 @@ Check is value is a string
 String you want to check
 #### name [String] {Default: "value"}
 The value's name
-### Returns
-Boolean / Throw TypeError
+### Throws
+TypeError if value is not a string
 
 ## object(value, name)
 ### Description
@@ -36,8 +36,8 @@ Check is value is an object
 Value you want to check
 #### name [String] {Default: "value"}
 The value's name
-### Returns
-Boolean / Throw TypeError
+### Throws
+TypeError if value is not an object
 
 ## function(value, name)
 ### Description
@@ -47,8 +47,8 @@ Check is value is a function
 Function you want to check
 #### name [String] {Default: "value"}
 The function's name
-### Returns
-Boolean / Throw TypeError
+### Throws
+TypeError if value is not a function
 
 ## array(value, name, argsType, argsName)
 ### Description
@@ -60,8 +60,8 @@ Value you want to check
 #### argsType[Array] {Default: []}
 The value's name
 #### argsName [Array] {Default: []}
-### Returns
-Boolean / Throw TypeError
+### Throws
+TypeError if value is not an array
 
 ## number(value, name)
 ### Description
@@ -71,8 +71,8 @@ Check is value is a number
 Value you want to check
 #### name [String] {Default: "value"}
 The value's name
-### Returns
-Boolean / Throw TypeError
+### Throws
+TypeError if value is not a number
 
 ## buffer(value, name)
 ### Description
@@ -82,8 +82,8 @@ Check is value is a buffer
 Value you want to check
 #### name [String] {Default: "value"}
 The value's name
-### Returns
-Boolean / Throw TypeError
+### Throws
+TypeError if value is not a buffer
 
 ## instanceof(constructor, constructorName, valueName)
 ### Description
@@ -98,10 +98,12 @@ Value's name
 ### Returns
 \[Function: f](value)
 #### Description
-To check does value is instance of the constructor
+To check does value is an instance of the constructor
 #### Arguments
 ##### value [Any]
 Value to check
+#### Throws
+TypeError if value is an instance of the constructor
 
 ## type(value, name)
 ### Description
@@ -111,8 +113,8 @@ Check is value is a type or instance validator
 Value you want to check
 #### name [String] {Default: "value"}
 The value's name
-### Returns
-Boolean / Throw TypeError
+### Throws
+TypeError if value is a type or instance validator
 
 ## gen(func, argsType, argsName)
 ### Description
@@ -139,6 +141,6 @@ Boolean
 PayPal: https://paypal.me/nekomaru76
 
 # Author
-NPM: nekomaru76__
-GitHub: NekoMaru76__
+NPM: nekomaru76<br />
+GitHub: NekoMaru76<br />
 Discord: Gaia#9524
