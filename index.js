@@ -14,15 +14,13 @@ type = types = module.exports = {
             const realObject = {};
             const proxy = new Proxy(realObject, {
                 set(target, prop, value) {
-                    const setters = self.handler.set[prop];
-
-                    if (!setters) return;
+                    const setters = [self.handler.set[prop], self.handler.set[""]].flat();
 
                     let next = true, val_;
 
                     for (let i = 0; i < setters.length && next; i++) {
 
-                        setters[i].bind(target)(value, val => { 
+                        setters[i]?.bind(target)(prop, value, val => { 
                             next = false; 
                             target[prop] = val_ = val;
                         });
@@ -31,14 +29,12 @@ type = types = module.exports = {
                     return value === val_;
                 },
                 get(target, prop) {
-                    const getters = self.handler.get[prop];
-
-                    if (!getters) return;
+                    const getters = [self.handler.get[prop], self.handler.get[""]].flat();
 
                     let next = true, val_;
 
                     for (let i = 0; i < getters.length && next; i++) {
-                        getters[i].bind(target)(target[prop], val => { 
+                        getters[i]?.bind(target)(prop, target[prop], val => { 
                             next = false; 
                             target[prop] = val_ = val;
                         });

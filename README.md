@@ -184,6 +184,7 @@ Add setter function
 ### Arguments
 #### setter [Function]
 ##### Arguments
+###### prop [String]
 ###### value [Any]
 ###### set [Function]
 #### path [String] {Default: ""}
@@ -194,6 +195,8 @@ Add getter function
 ### Arguments
 #### getter [Function]
 ##### Arguments
+###### prop [String]
+###### value [Any]
 ###### get [Function]
 #### path [String] {Default: ""}
 
