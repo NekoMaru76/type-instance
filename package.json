@@ -1,7 +1,7 @@
 {
   "name": "type-instance",
-  "version": "0.0.6-alpha1",
-  "description": "Check types",
+  "version": "0.0.6-alpha2",
+  "description": "Validate types",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

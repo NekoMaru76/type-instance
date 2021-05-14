@@ -166,10 +166,10 @@ Create new custom object
 ```js
 const customObject = new Object;
 
-customObject.addSetter(function(value, next) { 
+customObject.addSetter(function(prop, value, end) { 
     return end(value === "Hello World" ? "No" : value);
 }, "first");
-customObject.addGetter(function(value, end) {
+customObject.addGetter(function(prop, value, end) {
     return end(value === "Hello World" ? "No" : value);
 }, "first");
 
