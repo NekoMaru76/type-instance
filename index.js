@@ -2,20 +2,123 @@ function error(message, _Error = TypeError) {
    throw new _Error(message);
 }
 
+const lodash = require("lodash");
+
 let type, types;
 
 type = types = module.exports = {
+    Object: class Object {
+        constructor() {
+            const self = this;
+            const handler = { set: {}, get: {} };
+            const realObject = {};
+            const proxy = new Proxy(realObject, {
+                set(target, prop, value) {
+                    const setters = self.handler.set[prop];
+
+                    if (!setters) return;
+
+                    let next = true, val_;
+
+                    for (let i = 0; i < setters.length && next; i++) {
+
+                        setters[i].bind(target)(value, val => { 
+                            next = false; 
+                            target[prop] = val_ = val;
+                        });
+                    }
+
+                    return value === val_;
+                },
+                get(target, prop) {
+                    const getters = self.handler.get[prop];
+
+                    if (!getters) return;
+
+                    let next = true, val_;
+
+                    for (let i = 0; i < getters.length && next; i++) {
+                        getters[i].bind(target)(target[prop], val => { 
+                            next = false; 
+                            target[prop] = val_ = val;
+                        });
+                    }
+
+                    return val_;
+                }
+            });
+
+            this.proxy = proxy, 
+            this.realObject = realObject,
+            this.handler = handler;
+        }
+        addSetter(func, path = "") {
+            types.function.sync(func, "func");
+            types.string(path, "path");
+
+            if (!this.handler.set[path]) this.handler.set[path] = [];
+
+            this.handler.set[path].push(func);
+        }
+        addGetter(func, path = "") {
+            types.function.sync(func, "func");
+            types.string(path, "path");
+
+            if (!this.handler.get[path]) this.handler.get[path] = [];
+
+            this.handler.get[path].push(func);
+        }
+        removeSetters(func, path = "") {
+            types.function.sync(func, "func");
+            types.string(path, "path");
+
+            return Number(this.handler.set[path] && (() => {
+                let count = 0;
+
+                for (let i = 0; i < this.handler.set.length; i++) {
+                    if (this.handler.set[path][i] !== func) continue;
+      
+                    this.handler.set[path].splice(i, 1);
+
+                    count++, i--;
+                }
+
+                return count;
+            })());
+        }
+        removeGetters(func, path = "") {
+            types.function.sync(func, "func");
+            types.string(path, "path");
+
+            return Number(this.handler.get[path] && (() => {
+                let count = 0;
+
+                for (let i = 0; i < this.handler.get.length; i++) {
+                    if (this.handler.get[path][i] !== func) continue;
+      
+                    this.handler.get[path].splice(i, 1);
+
+                    count++, i--;
+                }
+
+                return count;
+            })());
+        }
+        get object() {
+            return this.proxy;
+        }
+    },
     string(value, name = "value") {
         typeof name !== "string" && error("Expected name as string");
-        typeof value == "string" && error(`Expected ${name} as String`);
+        typeof value !== "string" && error(`Expected ${name} as String`);
     },
     object(value, name = "value") {
         types.string(name, "name");
-        value instanceof Object && error(`Expected ${name} as Object`);
+        !value instanceof Object && error(`Expected ${name} as Object`);
     },
     ["function"](value, name = "value") {
         types.string(name, "name");
-        value instanceof Function && error(`Expexted ${name} as Function`);
+        !value instanceof Function && error(`Expexted ${name} as Function`);
     },
     type(value, name = "value") {
         types.string(name, "name");
@@ -44,7 +147,7 @@ type = types = module.exports = {
     },
     buffer(value, name = "value") {
         types.string(name, "name");
-        Buffer.isBuffer(value) && error(`Expected ${name} as Buffer`);
+        !Buffer.isBuffer(value) && error(`Expected ${name} as Buffer`);
     },
     instanceof(constructor, constructorName = "Function", valueName) {
         valueName && types.string(valueName, "valueName");
@@ -52,7 +155,7 @@ type = types = module.exports = {
         types.function(constructor, "constructor");
 
         const f = value => {
-            return value instanceof constructor ? true : error(`Expected ${`${valueName} as` || ""} instance of ${constructorName}`);
+            return !value instanceof constructor && error(`Expected ${`${valueName} as` || ""} instance of ${constructorName}`);
         };
 
         f.head = type, f.name = constructorName;
@@ -77,8 +180,19 @@ type = types = module.exports = {
     },
     number(number, name = "value") {
         types.string(name, "name");
-        typeof number === "number" && error(`Expected ${name} as Number`);
+        typeof number !== "number" && error(`Expected ${name} as Number`);
     }
+};
+
+types.function.async = (func, name = "value") => {
+    types.function(func, name);
+    
+    func.constructor.name !== "AsyncFunction" && error(`Expected ${name} as Async Function`);
+},
+types.function.sync = (func, name = "value") => {
+    types.function(func, name);
+
+    func.constructor.name !== "Function" && error(`Expected ${name} as Sync Function`);
 };
 
 types.string.name = "String",
