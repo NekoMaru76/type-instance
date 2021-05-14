@@ -1,6 +1,6 @@
 {
   "name": "type-instance",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Validate types",
   "main": "index.js",
   "scripts": {
@@ -18,5 +18,6 @@
   "bugs": {
     "url": "https://github.com/NekoMaru76/type-instance/issues"
   },
-  "homepage": "https://github.com/NekoMaru76/type-instance#readme"
+  "homepage": "https://github.com/NekoMaru76/type-instance#readme",
+  "dependencies": {}
 }

@@ -2,8 +2,6 @@ function error(message, _Error = TypeError) {
    throw new _Error(message);
 }
 
-const lodash = require("lodash");
-
 let type, types;
 
 type = types = module.exports = {
@@ -191,11 +189,18 @@ types.function.sync = (func, name = "value") => {
 
     func.constructor.name !== "Function" && error(`Expected ${name} as Sync Function`);
 };
+types.object.notArray = (object, name) => {
+    types.object(object, name);
+    Array.isArray(object) && error(`Expected ${name} as Object`);
+};
 
 types.string.name = "String",
 types.number.name = "Number",
 types.array.name = "Array",
 types.object.name = "Object",
+types.object.notArray.name = "Object",
 types.type.name = "Type/Instance validator",
 types.buffer.name = "Buffer",
+types.function.sync.name = "Function",
+types.function.async.name = "AsyncFunction",
 types.function.name = "Function";

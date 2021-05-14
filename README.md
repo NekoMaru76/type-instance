@@ -41,6 +41,17 @@ The value's name
 ### Throws
 TypeError if value is not an object
 
+## object#notArray(value, name)
+### Description
+Check is value is an object
+### Arguments
+#### value [Any]
+Value you want to check
+#### name [String] {Default: "value"}
+The value's name
+### Throws
+TypeError if value is not an object or if value is an array
+
 ## function(value, name)
 ### Description
 Check is value is a function
