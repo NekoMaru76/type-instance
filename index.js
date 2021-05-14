@@ -8,13 +8,14 @@ let type, types;
 
 type = types = module.exports = {
     Object: class Object {
-        constructor() {
+        constructor(object = {}) {
+            type.object(object, "object");
+
             const self = this;
             const handler = { set: {}, get: {} };
-            const realObject = {};
-            const proxy = new Proxy(realObject, {
+            const proxy = new Proxy(object, {
                 set(target, prop, value) {
-                    const setters = [self.handler.set[prop], self.handler.set[""]].flat();
+                    const setters = [self.handler.set[prop], self.handler.set[""], [(prop, val, end) => end(val)]].flat();
 
                     let next = true, val_;
 
@@ -29,7 +30,7 @@ type = types = module.exports = {
                     return value === val_;
                 },
                 get(target, prop) {
-                    const getters = [self.handler.get[prop], self.handler.get[""]].flat();
+                    const getters = [self.handler.get[prop], self.handler.get[""], [(prop, val, end) => end(val)]].flat();
 
                     let next = true, val_;
 
@@ -45,7 +46,7 @@ type = types = module.exports = {
             });
 
             this.proxy = proxy, 
-            this.realObject = realObject,
+            this.realObject = object,
             this.handler = handler;
         }
         addSetter(func, path = "") {

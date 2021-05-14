@@ -1,6 +1,6 @@
 {
   "name": "type-instance",
-  "version": "0.0.6-alpha2",
+  "version": "0.0.1",
   "description": "Validate types",
   "main": "index.js",
   "scripts": {

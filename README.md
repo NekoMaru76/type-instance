@@ -15,6 +15,8 @@ types.object({}); //no throws
 types.array([0, "hi", 1], "value", [types.string, types.number], ["arg1", "arg2", "arg3"]); //no throws
 types.gen(content => console.log(content), [types.string], ["content"])()//TypeError
 ```
+# How to Use Methods
+To use the methods, u need to import the module with `require("type-instance")` and now u just need to use properties from the imported object, ex: `require("type-instance").function`
 
 # Methods
 ## string(value, name)
@@ -159,7 +161,9 @@ Value you want to check
 ### Returns
 Boolean
 
-## new Object()
+## new Object(object)
+### Arguments
+#### object [Object] {Default: {}}
 ### Description
 Create new custom object
 ### Example
